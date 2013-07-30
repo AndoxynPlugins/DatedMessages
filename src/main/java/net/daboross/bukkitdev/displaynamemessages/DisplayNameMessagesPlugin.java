@@ -16,17 +16,28 @@
  */
 package net.daboross.bukkitdev.displaynamemessages;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerBedLeaveEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  *
  * @author daboross
  */
 public class DisplayNameMessagesPlugin extends JavaPlugin implements Listener {
+
+    private final String MOLLY = ChatColor.GRAY + "[" + ChatColor.DARK_PURPLE + "Molly" + ChatColor.GRAY + "]" + ChatColor.WHITE;
 
     @Override
     public void onEnable() {
@@ -40,10 +51,33 @@ public class DisplayNameMessagesPlugin extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("")) {
-        } else {
-            sender.sendMessage("DisplayNameMessages doesn't know about the command /" + cmd.getName());
-        }
+        sender.sendMessage("DisplayNameMessages doesn't know about the command /" + cmd.getName());
         return true;
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent evt) {
+        Player p = evt.getEntity();
+        evt.setDeathMessage(ChatColor.GRAY + evt.getDeathMessage().replace(p.getName(), ChatColor.BLUE + p.getDisplayName() + ChatColor.GRAY));
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent evt) {
+        evt.setJoinMessage(null);
+        final Player p = evt.getPlayer();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (p.isOnline()) {
+                    Bukkit.broadcastMessage(MOLLY + " hello " + ChatColor.BLUE + p.getDisplayName());
+                }
+            }
+        }.runTaskLater(this, 2);
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent evt) {
+        Player p = evt.getPlayer();
+        evt.setQuitMessage(MOLLY + " goodbye " + ChatColor.BLUE + p.getDisplayName());
     }
 }
