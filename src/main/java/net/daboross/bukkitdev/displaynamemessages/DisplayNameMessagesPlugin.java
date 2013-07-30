@@ -69,7 +69,7 @@ public class DisplayNameMessagesPlugin extends JavaPlugin implements Listener {
             @Override
             public void run() {
                 if (p.isOnline()) {
-                    Bukkit.broadcastMessage(MOLLY + " hello " + ChatColor.BLUE + p.getDisplayName());
+                    Bukkit.broadcastMessage(MOLLY + " Hello " + ChatColor.BLUE + p.getDisplayName());
                 }
             }
         }.runTaskLater(this, 2);
@@ -78,6 +78,6 @@ public class DisplayNameMessagesPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent evt) {
         Player p = evt.getPlayer();
-        evt.setQuitMessage(MOLLY + " goodbye " + ChatColor.BLUE + p.getDisplayName());
+        evt.setQuitMessage(MOLLY + " Goodbye " + ChatColor.BLUE + p.getDisplayName());
     }
 }
