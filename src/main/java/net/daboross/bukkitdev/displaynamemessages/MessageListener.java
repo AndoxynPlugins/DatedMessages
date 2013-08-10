@@ -6,6 +6,7 @@ package net.daboross.bukkitdev.displaynamemessages;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -23,7 +24,7 @@ public class MessageListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent evt) {
         evt.setJoinMessage(null);
         final Player p = evt.getPlayer();
@@ -39,7 +40,7 @@ public class MessageListener implements Listener {
         }.runTaskLater(plugin, 2);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onQuit(PlayerQuitEvent evt) {
         evt.setQuitMessage(null);
         Player p = evt.getPlayer();
