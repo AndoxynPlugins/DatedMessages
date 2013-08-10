@@ -24,7 +24,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.PluginManager;
@@ -35,14 +34,13 @@ import org.bukkit.scheduler.BukkitRunnable;
  *
  * @author daboross
  */
-public class DisplayNameMessagesPlugin extends JavaPlugin implements Listener {
+public class DisplayNameMessagesPlugin extends JavaPlugin {
 
-    private final String MOLLY = ChatColor.GRAY + "[" + ChatColor.DARK_PURPLE + "Molly" + ChatColor.GRAY + "]" + ChatColor.WHITE;
+    private MessageConfig mConfig;
 
     @Override
     public void onEnable() {
-        PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(this, this);
+        mConfig = new MessageConfig(this);
     }
 
     @Override
@@ -55,29 +53,7 @@ public class DisplayNameMessagesPlugin extends JavaPlugin implements Listener {
         return true;
     }
 
-    @EventHandler
-    public void onDeath(PlayerDeathEvent evt) {
-        Player p = evt.getEntity();
-        evt.setDeathMessage(ChatColor.GRAY + evt.getDeathMessage().replace(p.getName(), ChatColor.BLUE + p.getDisplayName() + ChatColor.GRAY));
-    }
-
-    @EventHandler
-    public void onJoin(PlayerJoinEvent evt) {
-        evt.setJoinMessage(null);
-        final Player p = evt.getPlayer();
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (p.isOnline()) {
-                    Bukkit.broadcastMessage(MOLLY + " Hiya " + ChatColor.BLUE + p.getDisplayName());
-                }
-            }
-        }.runTaskLater(this, 2);
-    }
-
-    @EventHandler
-    public void onQuit(PlayerQuitEvent evt) {
-        Player p = evt.getPlayer();
-        evt.setQuitMessage(MOLLY + " Bye bye " + ChatColor.BLUE + p.getDisplayName());
+    public MessageConfig getMConfig() {
+        return mConfig;
     }
 }
