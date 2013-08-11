@@ -26,19 +26,19 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author daboross
  */
 public class MessageConfig {
-
+    
     private final JavaPlugin plugin;
     private final FileUtils fileUtils;
     private File loginFile;
     private List<String> login;
     private File logoutFile;
     private List<String> logout;
-
+    
     public MessageConfig(JavaPlugin plugin) {
         this.plugin = plugin;
         this.fileUtils = new FileUtils(plugin);
     }
-
+    
     public void copyDefaultConfig() {
         plugin.saveResource("login.txt", false);
         plugin.saveResource("logout.txt", false);
@@ -71,7 +71,7 @@ public class MessageConfig {
      * do nothing if the configuration has already been loaded.
      */
     public void loadConfig() {
-        if (login == null) {
+        if (login == null||logout==null) {
             reloadConfig();
         }
     }
