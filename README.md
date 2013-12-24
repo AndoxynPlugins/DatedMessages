@@ -1,5 +1,5 @@
-PluginRequest-DisplayNameMessages
-=================================
+PluginRequest-DatedMessages
+===========================
 
 Message changer plugin that includes a date and other things.
 
